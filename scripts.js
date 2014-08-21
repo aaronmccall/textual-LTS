@@ -22,7 +22,7 @@
 // Textual.on_ct_nick: function() { app.setNick(event.target.innerHTML); }
 // Textual.on_nick = function() { app.setNick(event.target.parentNode.parentNode.getAttribute('nick')); }
 
-var mappedSelectedUsers = new Array();
+var mappedSelectedUsers = [];
 
 Textual.viewFinishedLoading = function() {
     Textual.fadeInLoadingScreen(1.00, 0.95);
@@ -38,7 +38,7 @@ Textual.viewFinishedReload = function() {
 Textual.newMessagePostedToView = function (line) {
     var element = document.getElementById("line-" + line);
     updateNicknameAssociatedWithNewMessage(element);
-    emojify.run();
+    emojify.run(element);
 
     var t = element.getAttribute("type");
 
