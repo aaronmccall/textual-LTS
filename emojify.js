@@ -940,9 +940,9 @@
             var message = line.querySelector("p > .message");
             if (message) {
                 [].forEach.call(message.childNodes, function(element) {
-                    if (element.className === 'time') return;
+                    if (element && element.classList && element.classList.contains('time')) return;
                     if (element.nodeName == "#text" || element.className == "effect") {
-                        element.textContent = element.textContent.replace(/:(\w+):/g, function (match, emoji) {
+                        element.textContent = element.textContent.replace(/:([\w\+\-]+):/g, function (match, emoji) {
                             if (emojify.names.hasOwnProperty(emoji)) {
                                 return emojify.names[emoji];
                             }
@@ -950,9 +950,7 @@
                         });
                         var emoticon;
                         for (emoticon in emojify.asciimoji) {
-                            console.log('checking for emoticon: ' + emoticon);
                             if (element.textContent.indexOf(emoticon) !== -1) {
-                                console.log('found emoticon: ' + emoticon);
                                 element.textContent = element.textContent.replace(emoticon, emojify.asciimoji[emoticon]);
                             }
                         }
