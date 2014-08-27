@@ -26,14 +26,10 @@ var mappedSelectedUsers = [];
 
 Textual.viewFinishedLoading = function() {
     Textual.fadeInLoadingScreen(1.00, 0.95);
-    setTimeout(function() {
-        Textual.scrollToBottomOfView()
-    }, 500);
+    setTimeout(Textual.scrollToBottomOfView.bind(Textual), 500);
 }
 
-Textual.viewFinishedReload = function() {
-    Textual.viewFinishedLoading();
-}
+Textual.viewFinishedReload = Textual.viewFinishedLoading;
 
 Textual.newMessagePostedToView = function (line) {
     var element = document.getElementById("line-" + line);
