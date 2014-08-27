@@ -936,6 +936,7 @@
             ":\\": "😕",
             ":-\\": "😕"
         },
+        historyPattern: /^(.*\[\d+:\d+:\d+)/,
         run: function (line) {
             var message = line.querySelector("p > .message");
             if (message) {
@@ -948,10 +949,19 @@
                             }
                             return match;
                         });
-                        var emoticon;
+                        var emoticon, splitHistory;
                         for (emoticon in emojify.asciimoji) {
                             if (element.textContent.indexOf(emoticon) !== -1) {
-                                element.textContent = element.textContent.replace(emoticon, emojify.asciimoji[emoticon]);
+                                splitHistory = element.textContent.split(emojify.historyPattern);
+                                if (splitHistory[0].match(/^\s+$/)) splitHistory.shift();
+                                if (splitHistory.length > 1) {
+                                    if (splitHistory.length === 2) {
+                                        splitHistory[1] = splitHistory[1].replace(emoticon, emojify.asciimoji[emoticon]);
+                                        element.textContent = splitHistory.join('');
+                                    }
+                                } else {
+                                    element.textContent = element.textContent.replace(emoticon, emojify.asciimoji[emoticon]);
+                                }
                             }
                         }
                     }
