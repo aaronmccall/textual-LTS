@@ -68,6 +68,78 @@ img {
     vertical-align: middle;
     margin: 0 5px;
     max-width: 95%;
+    height: auto;
+}
+
+.embed-video, .embed-image, .embed-rich {
+    position: relative;
+    display: block;
+    text-decoration: none;
+}
+
+.embed:after {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    height: 50px;
+    width: 50px;
+    box-sizing: border-box;
+    margin-top: -20px;
+    margin-left: -27.5px;
+    border-radius: 5px;
+    padding: 10px 10px 10px 15px;
+    box-shadow: inset 2px 2px 5px white, 2px 2px 5px #ccc;
+    background: rgba(187, 187, 187, 0.5);
+    color: black;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
+    pointer-events: none;
+}
+.embed-image:after {
+    content: "\D83D\DD0D";
+}
+.embed-video:after {
+    content: "\25B6";
+}
+.embed-rich:after {
+    left: 0;
+    margin-left: -10px;
+    z-index: -1;
+    box-shadow: none;
+    background: transparent;
+    content: "\D83D\DD17";
+}
+
+.embed-rich blockquote {
+    position: relative;
+}
+
+.embed-image .embed-title,
+.embed-video .embed-title,
+.embed-rich .embed-title,
+.embed-image .embed-description,
+.embed-video .embed-description,
+.embed-rich .embed-description
+ {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+    width: 95%;
+    margin-left: 5px;
+    padding-bottom: .25em;
+    background: rgba(255, 255, 255, 0.75);
+    color: #33404c;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+
+.embed-image .embed-description,
+.embed-video .embed-description,
+.embed-rich .embed-description {
+    bottom: 0px;
 }
 
 .emoji {

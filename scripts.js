@@ -35,13 +35,13 @@ Textual.newMessagePostedToView = function (line) {
     var element = document.getElementById("line-" + line);
     updateNicknameAssociatedWithNewMessage(element);
     emojify.run(element);
-
+    embed.processLinks(element);
     var t = element.getAttribute("type");
 
     if (t == "join" || t == "part") {
         $(element).fadeOut(5000);
     }
-}
+};
 
 Textual.nicknameSingleClicked = function() {
     userNicknameSingleClickEvent(event.target);
