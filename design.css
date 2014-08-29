@@ -142,6 +142,10 @@ img {
     bottom: 0px;
 }
 
+.noembed-embed td {
+    font-size: .75rem;
+}
+
 .emoji {
     display: inline-block;
     height: 1.5em;
