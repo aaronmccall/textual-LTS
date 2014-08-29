@@ -159,7 +159,12 @@
     var linkProcessor = defer(function (i, link) {
         var provider = oembedScan(link.href);
         if (provider) {
-            return $.getJSON(provider.url, (provider.processor || oembed).bind(null, link));
+            return $.getJSON(provider.url, function (data) {
+                if (data.error) {
+                    return $.get(link.href, responseProcessor.bind(null, link));
+                }
+                (provider.processor || oembed)(link, data);
+            });
         }
         $.get(link.href, responseProcessor.bind(null, link));
     });
@@ -210,11 +215,11 @@
         if (!namespace) namespace = 'og';
         var pattern = ogPatterns[prop];
         if (!pattern) {
-            pattern = ogPatterns[prop] = new RegExp("<meta[^>]+property=\"" + namespace + ":" + prop + "\"[^>]*>");
+            pattern = ogPatterns[prop] = new RegExp("<meta[^>]+property=[\"']" + namespace + ":" + prop + "[\"'][^>]*>");
         }
         var match = response.match(pattern);
         if (match) {
-            var content = match[0].match(/content="([^"]+)"/);
+            var content = match[0].match(/content=["']([^"]+)["']/);
             if (content && content[1]) return content[1].trim();
         }
         return '';
@@ -248,6 +253,12 @@
             embed.push('<span class="embed-title">' + og.title + '</span>');
         }
         if (og.description && og.description !== og.title) {
+            if (og.description.length > 50) {
+                og.description = og.description.split(/(\.?!)/).slice(0, 2).join('');
+                if (og.description > 50) {
+                    og.description = og.description.substr(0, 50) + '\u2026';
+                }
+            }
             embed.push('<span class="embed-description">' + og.description + '</span>');
         }
         if (og.image) {
@@ -266,6 +277,9 @@
         },
         rich: function (element, oembed) {
             if (!oembed.html) return;
+            if (oembed.html.indexOf('<blockquote') === -1) {
+                oembed.html = '<blockquote>' + oembed.html + '</blockquote>';
+            }
             var embed = $(oembed.html.split('<script').shift());
             if (element.hasChildNodes()) {
                 while (element.firstChild) element.removeChild(element.firstChild);
