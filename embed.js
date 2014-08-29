@@ -53,7 +53,7 @@
         Twitter: {
             endpoint: function (match) {
                 if (match[1]) {
-                    return 'https://api.twitter.com/1/statuses/oembed.json?id=' + match[1].trim();
+                    return 'https://api.twitter.com/1/statuses/oembed.json?omit_script=true?id=' + match[1].trim();
                 }
                 return '';
             },
@@ -206,10 +206,11 @@
 
     var ogPatterns = {};
 
-    function extractOpengraph(response, prop) {
+    function extractOpengraph(response, prop, namespace) {
+        if (!namespace) namespace = 'og';
         var pattern = ogPatterns[prop];
         if (!pattern) {
-            pattern = ogPatterns[prop] = new RegExp("<meta[^>]+property=\"og:" + prop + "\"[^>]*>");
+            pattern = ogPatterns[prop] = new RegExp("<meta[^>]+property=\"" + namespace + ":" + prop + "\"[^>]*>");
         }
         var match = response.match(pattern);
         if (match) {
@@ -232,12 +233,18 @@
             return embedVideo(element, og.image, og.title);
         }
 
+        if (og.type === 'article') {
+            og.author = extractOpengraph(response, 'author', 'article');
+        }
 
         var embed = [];
-        if (og.site_name) {
-            og.title =  og.site_name + ': ' + og.title;
-        }
         if (og.title) {
+            if (og.site_name) {
+                og.title =  og.site_name + ': ' + og.title;
+            }
+            if (og.author) {
+                og.title += ' by\u00A0' + og.author.split('/').pop();
+            }
             embed.push('<span class="embed-title">' + og.title + '</span>');
         }
         if (og.description && og.description !== og.title) {
