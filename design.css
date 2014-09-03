@@ -71,10 +71,25 @@ img {
     height: auto;
 }
 
-.embed-video, .embed-image, .embed-rich {
+.embed {
     position: relative;
     display: block;
     text-decoration: none;
+}
+
+.embed img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.embed .avatar {
+    display: inline-block;
+    max-width: 80px;
+    word-spacing: 0;
+    letter-spacing: 0;
+    float: left;
+    margin-right: .75em;
 }
 
 .embed:after {
@@ -103,6 +118,11 @@ img {
 .embed-video:after {
     content: "\25B6";
 }
+
+.embed-rich {
+    min-height: 
+}
+
 .embed-rich:after {
     left: 0;
     margin-left: -10px;
@@ -112,7 +132,8 @@ img {
     content: "\D83D\DD17";
 }
 
-.embed-rich blockquote {
+.embed blockquote {
+    text-align: left;
     position: relative;
 }
 
@@ -129,17 +150,19 @@ img {
     width: 95%;
     margin-left: 5px;
     padding-bottom: .25em;
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(128, 215, 248, 0.5);
     color: #33404c;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 
 .embed-image .embed-description,
 .embed-video .embed-description,
 .embed-rich .embed-description {
-    bottom: 0px;
+    bottom: 0;
+    font-style: italic;
+    font-size: 1rem;
 }
 
 .noembed-embed td {
@@ -304,7 +327,7 @@ div[type=action] .message {
     color: #33404c;
     line-height: 17px;
     box-sizing: border-box;
-    display: inline-block;
+    display: block;
 }
 
 /* highlight color */
