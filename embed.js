@@ -172,6 +172,23 @@
         Hackpad: {
             patterns: [ /^https?:\/\/[^\.]*\.?hackpad.com.*$/ ],
             endpoint: function () { return null; }
+        },
+        Giphy: {
+            patterns: [
+                /^https?:\/\/(gph\.is|giphy\.com).*$/
+            ],
+            endpoint: function (match) { return match[0]; },
+            processor: function (element, doc) {
+                var imageMeta = $(doc).find('[itemprop="image"]');
+                if (!imageMeta.length) return;
+                embedImage(element, imageMeta.attr('content'));
+                var title = extractOpengraph(doc, 'title');
+                if (title) {
+                    title = title.replace(/animated|gif/gi, '').trim();
+                    element.appendChild($(embedTitle(title))[0]);
+                }
+            },
+            json: false
         }
     };
     function oembedScan(href) {
